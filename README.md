@@ -1,5 +1,6 @@
-# goroutine wrapper
-wrap go `sync.WaitGroup` processing goroutine.
+# wrapper
+- wrap go `sync.WaitGroup` processing goroutine
+- wrap go `chan` processing goroutine
 
 # why wrap
 - Wrap the go `sync.WaitGroup` so that you don't sometimes forget to write `defer wg.Add(1)` before the business layer writes go func, or `defer wg.Done()` when it's Done.
@@ -16,6 +17,7 @@ import (
 )
 
 func main() {
+	// through wg to exec goroutine
 	var wg = wrap.New()
 	wg.Wrap(func() {
 		log.Println("this is test")
@@ -39,5 +41,22 @@ func main() {
 	})
 
 	wg.Wait()
+
+	// through chan to exec goroutine
+	w := wrap.NewChanWrapper(2)
+	w.Wrap(func() {
+		log.Println("this is test")
+	})
+
+	w.WrapWithRecovery(func() {
+		log.Println("exec goroutine with recovery func")
+		var s = []string{"a", "b", "c"}
+		log.Printf("s[3] = %v", s[3])
+	}, func(r interface{}) {
+		// exec recover:runtime error: index out of range [3] with length 3
+		log.Printf("exec recover:%v", r)
+	})
+
+	w.Wait()
 }
 ```

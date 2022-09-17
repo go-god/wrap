@@ -4,19 +4,19 @@ import (
 	"sync"
 )
 
-// wrapper wrap go WaitGroup
-type wrapper struct {
+// wgWrapper wrap go WaitGroup
+type wgWrapper struct {
 	wg sync.WaitGroup
 }
 
-// New create wrapper instance
-func New() *wrapper {
-	w := &wrapper{}
+// New create wgWrapper instance
+func New() *wgWrapper {
+	w := &wgWrapper{}
 	return w
 }
 
 // Wrap fn func in goroutine to run without recovery func
-func (w *wrapper) Wrap(fn func()) {
+func (w *wgWrapper) Wrap(fn func()) {
 	w.wg.Add(1)
 	go func() {
 		defer w.wg.Done()
@@ -25,7 +25,7 @@ func (w *wrapper) Wrap(fn func()) {
 }
 
 // WrapWithRecovery fn func in goroutine to run with customized recovery func
-func (w *wrapper) WrapWithRecovery(fn func(), recoveryFunc func(r interface{})) {
+func (w *wgWrapper) WrapWithRecovery(fn func(), recoveryFunc func(r interface{})) {
 	w.wg.Add(1)
 	go func() {
 		defer func() {
@@ -40,6 +40,6 @@ func (w *wrapper) WrapWithRecovery(fn func(), recoveryFunc func(r interface{})) 
 }
 
 // Wait blocks until the WaitGroup counter is zero.
-func (w *wrapper) Wait() {
+func (w *wgWrapper) Wait() {
 	w.wg.Wait()
 }

@@ -49,3 +49,31 @@ func TestWrapper(t *testing.T) {
 --- PASS: TestWrapper (0.00s)
 PASS
 */
+
+func TestNewChanWrapper(t *testing.T) {
+	w := NewChanWrapper(2)
+
+	w.Wrap(func() {
+		log.Println("this is test")
+	})
+
+	w.WrapWithRecovery(func() {
+		log.Println("exec goroutine with recovery func")
+		var s = []string{"a", "b", "c"}
+		log.Printf("s[3] = %v", s[3])
+	}, func(r interface{}) {
+		// exec recover:runtime error: index out of range [3] with length 3
+		log.Printf("exec recover:%v", r)
+	})
+
+	w.Wait()
+}
+
+/*
+=== RUN   TestNewChanWrapper
+2022/09/18 00:15:18 exec goroutine with recovery func
+2022/09/18 00:15:18 this is test
+--- PASS: TestNewChanWrapper (0.00s)
+2022/09/18 00:15:18 exec recover:runtime error: index out of range [3] with length 3
+PASS
+*/
