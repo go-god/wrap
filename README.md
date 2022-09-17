@@ -1,4 +1,4 @@
-# wrapper
+# goroutine wrapper
 wrap go `sync.WaitGroup` processing goroutine.
 
 # why wrap
