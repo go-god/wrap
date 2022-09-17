@@ -1,2 +1,2 @@
-# spawn
-wrapper go waitgroup to handler go goroutine.
+# go waitgroup wrapper
+wrap waitgroup to handler go goroutine.
