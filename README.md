@@ -1,2 +1,2 @@
 # go waitgroup wrapper
-wrap waitgroup to handler go goroutine.
+wrap go waitgroup processing goroutine.
