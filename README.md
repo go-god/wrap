@@ -1,4 +1,4 @@
-# wrapper
+# wrap
 - wrap go `sync.WaitGroup` processing goroutine
 - wrap go `chan` processing goroutine
 
